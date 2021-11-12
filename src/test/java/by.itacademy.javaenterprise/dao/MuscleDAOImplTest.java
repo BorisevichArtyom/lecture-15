@@ -28,8 +28,8 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 
 public class MuscleDAOImplTest {
-    private static MuscleDAOImpl muscleDAO;
-    private static JdbcTemplate jdbcMock;
+    private  MuscleDAOImpl muscleDAO;
+    private  JdbcTemplate jdbcMock;
     private static Muscle muscle = Muscle.builder().muscleName("XXX").muscleId(2).build();
     private static List<Muscle> list = new ArrayList<>();
 

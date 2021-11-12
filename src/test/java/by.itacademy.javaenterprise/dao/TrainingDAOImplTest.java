@@ -41,13 +41,13 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 public class TrainingDAOImplTest {
 
-    private static TrainingDAOImpl trainingDAO;
+    private TrainingDAOImpl trainingDAO;
 
-    private static DataSource mockDataSource;
-    private static Connection mockConn;
-    private static PreparedStatement mockPreparedStmnt;
-    private static ResultSet mockResultSet;
-    private static Training training = Training.builder().date(LocalDateTime.now()).id(2).userID(1).build();
+    private  DataSource mockDataSource;
+    private  Connection mockConn;
+    private  PreparedStatement mockPreparedStmnt;
+    private  ResultSet mockResultSet;
+    private  Training training = Training.builder().date(LocalDateTime.now()).id(2).userID(1).build();
 
     @BeforeEach
     public void setUp() throws Exception {
