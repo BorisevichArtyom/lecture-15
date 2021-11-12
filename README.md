@@ -5,6 +5,7 @@
 ___
 
 ## Whats done:
+[Тесты](https://github.com/ieronim777/lecture15/tree/develop/src/test/java/by.itacademy.javaenterprise/dao)
 1.Added in class:ExerciseNameDAOImplTest:
 * testcontainer 
 
@@ -25,4 +26,4 @@ ___
 >>To run environment: $docker-compose up -d
 >>>To run liquibase and fill in database: $mvn liquibase:update
 ___
-[вверх](https://github.com/ieronim777/lecture15/tree/develop)
+
