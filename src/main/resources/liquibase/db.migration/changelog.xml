@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd
+http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd
+http://www.liquibase.org/xml/ns/pro ">
+
+    <changeSet author="borisevich" id="2021-11-03-create-table-user-role">
+        <sql>CREATE TABLE `User_role` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `user_role_name` varchar(255) NOT NULL,
+            PRIMARY KEY (`id`)
+            )</sql>
+    </changeSet>
+    <changeSet author="borisevich" id="2021-11-03-create-table-user">
+        <sql>CREATE TABLE `Diary_user` (
+            `user_id` int(255) NOT NULL AUTO_INCREMENT,
+            `email` varchar(255) NOT NULL,
+            `user_password` varchar(255) NOT NULL,
+            `first_name` varchar(255) NOT NULL,
+            `last_name` varchar(255) NOT NULL,
+            `balance_amount` decimal(10,0) NOT NULL DEFAULT '0',
+            `user_role_id` int(11) DEFAULT '1',
+            PRIMARY KEY (`user_id`),
+            UNIQUE KEY `UNIQUE` (`email`),
+            KEY `user_role_idx` (`user_role_id`),
+            CONSTRAINT `user_role` FOREIGN KEY (`user_role_id`) REFERENCES `User_role` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
+            )
+        </sql>
+    </changeSet>
+    <changeSet author="borisevich" id="2021-11-03-create-table-muscles">
+       <sql>CREATE TABLE `Muscles` (
+           `Muscle_id` int(11) NOT NULL AUTO_INCREMENT,
+           `Muscle_name` varchar(45) NOT NULL,
+           PRIMARY KEY (`Muscle_id`),
+           UNIQUE KEY `Muscle_id_UNIQUE` (`Muscle_id`),
+           UNIQUE KEY `Muscle_name_UNIQUE` (`Muscle_name`)
+           )</sql>
+    </changeSet>
+    <changeSet author="borisevich" id="2021-11-03-insert-table-user-role-1">
+        <sql>INSERT User_role(id,user_role_name)
+            VALUES (2, 'Coach');
+        </sql>
+    </changeSet>
+    <changeSet author="borisevich" id="2021-11-03-insert-table-user-role-2">
+        <sql>INSERT User_role(id,user_role_name)
+        VALUES (3, 'Admin')</sql>
+    </changeSet>
+    <changeSet author="borisevich" id="2021-11-03-insert-table-user-role-3">
+        <sql>INSERT User_role(id,user_role_name)
+        VALUES (1, 'Athlete')</sql>
+    </changeSet>
+    <changeSet author="borisevich" id="2021-11-03-create-table-exercise-name">
+        <sql> CREATE TABLE `Exercises_name` (
+            `Name_Exercises_id` int(10) NOT NULL AUTO_INCREMENT,
+            `Name` varchar(255) NOT NULL,
+            PRIMARY KEY (`Name_Exercises_id`),
+            UNIQUE KEY `Unique` (`Name`)
+            )</sql>
+    </changeSet>
+    <changeSet author="borisevich" id="2021-11-03-create-table-muscles-exercises-name">
+        <sql> CREATE TABLE Muscles_x_Exercises_name (
+            Name_Exercises_id INT NOT NULL,
+            Muscle_id INT NOT NULL,
+            FOREIGN KEY (Muscle_id) REFERENCES Muscles(Muscle_id),
+            FOREIGN KEY (Name_Exercises_id) REFERENCES Exercises_name(Name_Exercises_id),
+            UNIQUE (Name_Exercises_id, Muscle_id)
+            )</sql>
+    </changeSet>
+    <changeSet author="borisevich" id="2021-11-03-insert-table-exercises-name">
+        <sql>
+            INSERT INTO Exercises_name(Name)
+            VALUES ( 'Pull ups'),( 'Push ups'),( 'Bench press'),( 'Raising dumbells'),( 'Deadlift'),( 'Squats');</sql>
+    </changeSet>
+    <changeSet author="borisevich" id="2021-11-03-create-table-training">
+        <sql>CREATE TABLE `Training` (
+            `Training_id` int(11) NOT NULL AUTO_INCREMENT,
+            `Training_date` datetime DEFAULT NULL,
+            `Training_name` varchar(45) DEFAULT NULL,
+            `Status` varchar(45) DEFAULT NULL,
+            `Total_repeats` int(11) DEFAULT NULL,
+            `Total_time` time DEFAULT NULL,
+            `Total_weight_kg` int(11) DEFAULT NULL,
+            `user_id` int(255) NOT NULL,
+            PRIMARY KEY (`Training_id`),
+            KEY `user_name_idx` (`user_id`),
+            CONSTRAINT `user_name` FOREIGN KEY (`user_id`) REFERENCES `Diary_user` (`user_id`) ON DELETE NO ACTION ON UPDATE CASCADE
+            )</sql>
+    </changeSet>
+    <changeSet author="borisevich" id="2021-11-03-create-table-exercise-on-training">
+        <sql>CREATE TABLE `Exercises_on_training` (
+            `Exercise_id` int(11) NOT NULL AUTO_INCREMENT,
+            `Training_id` int(11) NOT NULL,
+            `Name_Exercises_id` int(11) NOT NULL,
+            `Total_repeats` int(11) DEFAULT NULL,
+            `Total_time` time DEFAULT NULL,
+            `Total_weight` int(11) DEFAULT NULL,
+            `Total_approaches` int(20) DEFAULT NULL,
+            PRIMARY KEY (`Exercise_id`),
+            KEY `Training_id_fk_idx` (`Training_id`),
+            KEY `Muscle_id_fk_idx` (`Name_Exercises_id`),
+            CONSTRAINT `Name_Exercises_fk` FOREIGN KEY (`Name_Exercises_id`) REFERENCES `Exercises_name` (`Name_Exercises_id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+            CONSTRAINT `Training_id_fk` FOREIGN KEY (`Training_id`) REFERENCES `Training` (`Training_id`) ON DELETE NO ACTION ON UPDATE CASCADE
+            )</sql>
+    </changeSet>
+    <changeSet author="borisevich" id="2021-11-03-create-table-approaches">
+        <sql>CREATE TABLE `Approaches` (
+            `Exercise_id` int(11) NOT NULL,
+            `Approach_id` int(11) NOT NULL AUTO_INCREMENT,
+            `Approach_counter` int(11) DEFAULT NULL,
+            `Time` time DEFAULT NULL,
+            `Weight` int(11) DEFAULT NULL,
+            `Rest_min` int(11) DEFAULT NULL,
+            `Repeats` int(11) DEFAULT NULL,
+            PRIMARY KEY (`Approach_id`),
+            KEY `Exercise_idx` (`Exercise_id`),
+            CONSTRAINT `Exercise_id_fk` FOREIGN KEY (`Exercise_id`) REFERENCES `Exercises_on_training` (`Exercise_id`) ON DELETE NO ACTION ON UPDATE CASCADE
+            )</sql>
+    </changeSet>
+        <changeSet author="borisevich" id="2021-11-03-insert-table-muscles">
+            <sql>INSERT Muscles(Muscle_id,Muscle_name)
+                VALUES (1,'Trycep'),(2,'Bycep'),(3,'Calves'),(4,'Upper back'),(5,'Abdominals'),(6,'Chest');</sql>
+        </changeSet>
+        <changeSet author="borisevich" id="2021-11-03-insert-table-diary-user">
+            <sql>INSERT Diary_user(user_id,email,user_password,first_name,last_name,balance_amount)
+                VALUES (1,'grb@tut.by', 'Bicep','Denis', 'Samusenko',100),(2,'321@tut.by', 'www','Artuom', 'Samusenko',200),
+                (3,'7891@tut.by', 'ppp','Sergei', 'Spiridonov',200),(4,'7891eddh1@tut.by', 'ddd','Sergei', 'Borisevich',200);</sql>
+        </changeSet>
+    <changeSet author="borisevich" id="2021-11-03-insert-table-training">
+        <sql>    INSERT INTO `demodb`.`Training`
+            (`Training_id`,
+            `Training_date`,
+            `Training_name`,
+            `Status`,
+            `Total_repeats`,
+            `Total_time`,
+            `Total_weight_kg`,
+            `user_id`)
+            VALUES(1,'28.10.2021','Chest','Done',500,'01:00:01',1000,1),(2,'24.10.2021','Back','Done',500,'01:00:01',100,2),
+            (3,'24.10.2021','Legs','Done',500,'01:00:01',1000,3),(4,'22.10.2021','Running','Done',0,'01:00:01',000,1);</sql>
+    </changeSet>
+    <changeSet author="borisevich" id="2021-11-03-insert-table-exercises-on-training">
+        <sql>
+            INSERT INTO Exercises_on_training(Exercise_id,Training_id,Name_Exercises_id,Total_repeats,Total_time,Total_weight,Total_approaches)
+            VALUES (1, 1, 2,200, '01:00:01',1000,5), (2, 1, 2,100, '01:00:01',1000,5),
+            (3, 2, 3,20, '01:00:01',1000,5), (4, 1, 2,100, '01:00:01',1000,5), (5, 4, 4,10, '01:00:01',1000,5);</sql>
+    </changeSet>
+    <changeSet author="borisevich" id="2021-11-03-alter-table-approaches">
+        <sql>    ALTER TABLE Approaches
+            DROP COLUMN Rest_min;</sql>
+    </changeSet>
+    <changeSet author="borisevich" id="2021-11-03-insert-table-approaches">
+        <sql>    INSERT INTO Approaches(Exercise_id,Approach_counter,Time,Weight,Repeats)
+            VALUES (2, 1,'00:02:01', 50, 10),(2, 2,'00:02:01', 40, 12),(3, 1,'00:02:01', 60, 13),
+            (1, 1,'00:02:01', 50, 10),(3, 1,'00:02:01', 80, 18);</sql>
+    </changeSet>
+    <changeSet author="borisevich" id="2021-11-03-insert-table-muscles-x-exercise-name">
+        <sql>    INSERT INTO Muscles_x_Exercises_name VALUES (1,2),(1,4);</sql>
+    </changeSet>
+    <changeSet author="borisevich" id="2021-11-03-alter-table-training">
+        <sql>  ALTER TABLE `demodb`.`Training`
+            DROP COLUMN `Total_weight_kg`,
+            DROP COLUMN `Total_time`,
+            DROP COLUMN `Total_repeats`,
+            DROP COLUMN `Status`,
+            DROP COLUMN `Training_name`;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
