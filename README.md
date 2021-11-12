@@ -1,4 +1,3 @@
-<a id="anchor">https://github.com/ieronim777/lecture15/tree/develop</a>
 # Hometask #15
 0. home task for 14
 1. add mock test for jdbctemplate dao
@@ -26,4 +25,4 @@ ___
 >>To run environment: $docker-compose up -d
 >>>To run liquibase and fill in database: $mvn liquibase:update
 ___
-[вверх](№anchor)
+[вверх](https://github.com/ieronim777/lecture15/tree/develop)
