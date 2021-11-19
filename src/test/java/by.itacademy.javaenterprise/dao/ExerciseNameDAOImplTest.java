@@ -50,7 +50,7 @@ public class ExerciseNameDAOImplTest {
     NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(ds);
 
     ExerciseName exerciseNamee = ExerciseName.builder().exerciseNameId(8).exerciseName("Chin-ups").build();
-    ExerciseNameDAOImpl daoImpl = new ExerciseNameDAOImpl(namedParameterJdbcTemplate, mapSqlParameterSource);
+    ExerciseNameDAOImpl daoImpl = new ExerciseNameDAOImpl(namedParameterJdbcTemplate);
 
     @BeforeAll
     public static void beforeClass() throws Exception {

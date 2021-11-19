@@ -37,58 +37,61 @@ public class ExerciseNameDAOImpl implements ExerciseNameDAO<ExerciseName> {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    private final MapSqlParameterSource mapSqlParameterSource;
+    private  MapSqlParameterSource mapSqlParameterSource;
 
-    RowMapper<ExerciseName> EXERCISE_NAME_MAPPER = (ResultSet resultSet, int rowNum) -> {
+    private static final  RowMapper<ExerciseName> EXERCISE_NAME_MAPPER = (ResultSet resultSet, int rowNum) -> {
         return new ExerciseName(resultSet.getInt(1), (resultSet.getString(2)));
     };
 
-    RowMapper<ExerciseName> EXERCISE_MAPPER_ONLY_NAME = (ResultSet resultSet, int rowNum) -> {
+    private static final  RowMapper<ExerciseName> EXERCISE_MAPPER_ONLY_NAME = (ResultSet resultSet, int rowNum) -> {
         return ExerciseName.builder().exerciseName(resultSet.getString(1)).build();
     };
 
-    public ExerciseNameDAOImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate,
-                               MapSqlParameterSource mapSqlParameterSource) {
+    public ExerciseNameDAOImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
-        this.mapSqlParameterSource = mapSqlParameterSource;
+        this.mapSqlParameterSource = new MapSqlParameterSource();
     }
 
 
     @Override
     public void addNameOfExercise(ExerciseName exerciseName) throws DAOException {
+        mapSqlParameterSource=new MapSqlParameterSource();
         mapSqlParameterSource.addValue("id", exerciseName.getExerciseNameId());
         mapSqlParameterSource.addValue("name", new SqlLobValue(exerciseName.getExerciseName(),
                 new DefaultLobHandler()), Types.CLOB);
         try {
             namedParameterJdbcTemplate.update(ADD_QUERY, mapSqlParameterSource);
         } catch (Exception e) {
-            throw new DAOException("Cant add exercise name:" + exerciseName + " " + e);
+            throw new DAOException("Cant add exercise name:" + exerciseName, e);
         }
     }
 
     @Override
     public void updateExerciseName(ExerciseName exerciseName, int exerciseNameId) throws DAOException {
+        mapSqlParameterSource=new MapSqlParameterSource();
         mapSqlParameterSource.addValue("id", exerciseNameId);
         mapSqlParameterSource.addValue("name", exerciseName.getExerciseName());
         try {
             namedParameterJdbcTemplate.update(UPDATE_QUERY, mapSqlParameterSource);
         } catch (Exception e) {
-            throw new DAOException("Cant update exercise name with this id:" + exerciseNameId+ " " + e);
+            throw new DAOException("Cant update exercise name with this id:" + exerciseNameId , e);
         }
 
     }
 
     @Override
     public void deleteExerciseName(int exerciseNameId) throws DAOException {
+        mapSqlParameterSource=new MapSqlParameterSource();
         try {
             namedParameterJdbcTemplate.update(DELETE_QUERY, Collections.singletonMap("id", exerciseNameId));
         } catch (DataAccessException e) {
-            throw new DAOException("Cant delete exercise name with this id:" + exerciseNameId+ " " + e);
+            throw new DAOException("Cant delete exercise name with this id:" + exerciseNameId, e);
         }
     }
 
     @Override
     public List<ExerciseName> getAllExerciseNamesPagination(int limit, int offset) throws DAOException {
+        mapSqlParameterSource=new MapSqlParameterSource();
         mapSqlParameterSource.addValue("limit", limit);
         mapSqlParameterSource.addValue("offset", offset);
 
@@ -100,13 +103,14 @@ public class ExerciseNameDAOImpl implements ExerciseNameDAO<ExerciseName> {
 
     public String getExerciseNameById(int exerciseNameId) throws DAOException {
         String exerciseNameById;
+        mapSqlParameterSource=new MapSqlParameterSource();
         mapSqlParameterSource.addValue("id", exerciseNameId);
         try {
             ExerciseName exerciseName = namedParameterJdbcTemplate.queryForObject(FIND_EXERCISE_NAME_BY_ID_QUERY
                     , mapSqlParameterSource, EXERCISE_MAPPER_ONLY_NAME);
             exerciseNameById = exerciseName.getExerciseName();
         } catch (Exception e) {
-            throw new DAOException("Cant find exercise name by this id:" + e);
+            throw new DAOException("Cant find exercise name by this id:" , e);
         }
         return exerciseNameById;
     }

@@ -1,39 +1,21 @@
 package by.itacademy.javaenterprise.dao;
 
-import by.itacademy.javaenterprise.dao.impl.MuscleDAOImpl;
 import by.itacademy.javaenterprise.dao.impl.TrainingDAOImpl;
-import by.itacademy.javaenterprise.dao.impl.UserDAOImpl;
-import by.itacademy.javaenterprise.entity.Muscle;
 import by.itacademy.javaenterprise.entity.Training;
-import by.itacademy.javaenterprise.entity.User;
 import by.itacademy.javaenterprise.exception.DAOException;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.internal.util.reflection.Fields;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;

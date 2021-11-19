@@ -89,7 +89,7 @@ public class UserDAOImpl implements UserDAO<User> {
             prepareAddStatement(pst, user);
             pst.executeUpdate();
         } catch (SQLException e) {
-            throw new DAOException("Error while adding a user" + user.toString()+ " " + e);
+            throw new DAOException("Error while adding a user" + user.toString(), e);
         }
     }
 
@@ -101,7 +101,7 @@ public class UserDAOImpl implements UserDAO<User> {
             prepareUpdateStatement(statement, user, idUser);
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DAOException("Error while updating a user" + user.toString()+ " " + e);
+            throw new DAOException("Error while updating a user" + user.toString(), e);
 
         }
     }
@@ -113,7 +113,7 @@ public class UserDAOImpl implements UserDAO<User> {
             prepareDeleteStatement(statement, user);
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DAOException("Error while deleting a user" + user.toString()+ " " + e);
+            throw new DAOException("Error while deleting a user" + user.toString(), e);
         }
     }
 
@@ -136,7 +136,7 @@ public class UserDAOImpl implements UserDAO<User> {
             }
 
         } catch (SQLException e) {
-            logger.error("Error with select by id"+ " " + e);
+            logger.error("Error with select by id", e);
         }
         return userID;
     }
@@ -148,7 +148,7 @@ public class UserDAOImpl implements UserDAO<User> {
                     USER_MAPPER_WITHOUT_ID, userId);
             user.setId(userId);
         } catch (Exception e) {
-            throw new DAOException("Cant find user by this id:" + userId+ " " + e);
+            throw new DAOException("Cant find user by this id:" + userId, e);
         }
         return user;
 

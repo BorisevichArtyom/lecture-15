@@ -15,19 +15,17 @@ import java.util.List;
 public class UpdateTrainingCommand implements Command<Integer> {
 
     private static final Logger logger = LoggerFactory.getLogger(UpdateTrainingCommand.class);
-    @Autowired
-    TrainingDAO<Training> training;
 
+    @Autowired
+    private TrainingDAO<Training> trainingDAO;
 
     @Override
     public void execute(Integer trainingId) throws DAOException {
-        List<Training> list = training.getAllTrainingsPagination(100, 0);
+        List<Training> list = trainingDAO.getAllTrainingsPagination(100, 0);
         for (Training item : list) {
-            if (item.getId() == 1) {
-               item.setDate(item.getDate().plusDays(3L));
-                System.out.println(item);
-                training.updateTraining(item);
-            }
+            item.setDate(item.getDate().plusDays(3L));
+            trainingDAO.updateTraining(item);
+            logger.info("Query executed {}", item);
         }
     }
 }

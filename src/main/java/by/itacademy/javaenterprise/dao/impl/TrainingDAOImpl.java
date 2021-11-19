@@ -59,7 +59,7 @@ public class TrainingDAOImpl implements TrainingDAO<Training> {
             prepareAddStatement(pst, training);
             pst.executeUpdate();
         } catch (SQLException e) {
-            throw new DAOException("Error while adding a training" + training.toString()+ " " + e);
+            throw new DAOException("Error while adding a training" + training.toString(), e);
         }
 
     }
@@ -71,7 +71,7 @@ public class TrainingDAOImpl implements TrainingDAO<Training> {
             prepareUpdateStatement(statement, training);
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DAOException("Error while updating training" + training.toString()+ " " + e);
+            throw new DAOException("Error while updating training" + training.toString(), e);
 
         }
     }
@@ -83,7 +83,7 @@ public class TrainingDAOImpl implements TrainingDAO<Training> {
             prepareDeleteStatement(statement, training);
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DAOException("Error while deleting training" + training.toString()+ " " + e);
+            throw new DAOException("Error while deleting training" + training.toString(), e);
         }
     }
 
@@ -102,7 +102,7 @@ public class TrainingDAOImpl implements TrainingDAO<Training> {
                         .userID(rs.getInt(SELECT_ALL_USER_ID_QUERY_INDEX)).build());
             }
         } catch (SQLException e) {
-            logger.error("Error with selecting trainings"+ " " + e);
+            logger.error("Error with selecting trainings"+ " ", e);
         }
         return trainings;
     }
@@ -124,10 +124,5 @@ public class TrainingDAOImpl implements TrainingDAO<Training> {
         statement.setInt(TRAINING_ID_DELETE_QUERY_INDEX, training.getId());
     }
 
-    public static void main(String[] args) throws DAOException {
-        Training training=Training.builder().userID(1).id(12).date(LocalDateTime.now()).build();
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
-        TrainingDAOImpl daoImpl = context.getBean(TrainingDAOImpl.class);
-      daoImpl.getAllTrainingsPagination(10,0).forEach(System.out::println);
-    }
+
 }

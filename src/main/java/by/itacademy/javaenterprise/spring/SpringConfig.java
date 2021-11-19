@@ -53,10 +53,6 @@ public class SpringConfig {
         return new NamedParameterJdbcTemplate(jdbcTemplate());
     }
 
-    @Bean
-    public MapSqlParameterSource mapSqlParameterSource() {
-        return new MapSqlParameterSource();
-    }
 
     @Bean
     public Main qualifierExample(@Qualifier("UpdateTraining") Command<Integer> command) {

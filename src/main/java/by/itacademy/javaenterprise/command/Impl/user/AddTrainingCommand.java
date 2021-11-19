@@ -15,13 +15,15 @@ import java.time.LocalDateTime;
 public class AddTrainingCommand implements Command<Integer> {
 
     private static final Logger logger = LoggerFactory.getLogger(AddTrainingCommand.class);
+
     @Autowired
-    TrainingDAO<Training> training;
+    private TrainingDAO<Training> trainingDAO;
+
     @Override
     public void execute(Integer id)  {
        Training trainingdate = Training.builder().id(id).date(LocalDateTime.of(2015, 12, 8, 12, 30)).userID(1).build();
         try {
-            training.addTraining(trainingdate);
+            trainingDAO.addTraining(trainingdate);
         } catch (DAOException e) {
            logger.error("Error while adding training",e);
         }

@@ -48,7 +48,7 @@ public class MuscleDAOImpl implements MuscleDAO<Muscle> {
         try {
             jdbcTemplate.update(ADD_QUERY, muscle.getMuscleId(), muscle.getMuscleName());
         } catch (Exception e) {
-            throw new DAOException("Cant add muscle:" + muscle+ " " + e);
+            throw new DAOException("Cant add muscle:" + muscle, e);
         }
     }
 
@@ -59,7 +59,7 @@ public class MuscleDAOImpl implements MuscleDAO<Muscle> {
             String muscleName = muscle.getMuscleName();
             jdbcTemplate.update(UPDATE_QUERY, muscleName, muscleId);
         } catch (Exception e) {
-            throw new DAOException("Cant update muscle:" + muscle + " muscle id:" + muscleId + " " + e);
+            throw new DAOException("Cant update muscle:" + muscle + " muscle id:" + muscleId , e);
         }
     }
 
@@ -68,7 +68,7 @@ public class MuscleDAOImpl implements MuscleDAO<Muscle> {
         try {
             jdbcTemplate.update(DELETE_QUERY, muscleName);
         } catch (DataAccessException e) {
-            throw new DAOException("Cant delete muscle:" + muscleName+ " " + e);
+            throw new DAOException("Cant delete muscle:" + muscleName,e);
         }
 
     }
@@ -87,7 +87,7 @@ public class MuscleDAOImpl implements MuscleDAO<Muscle> {
             muscle = jdbcTemplate.queryForObject(FIND_MUSCLE_BY_ID_QUERY,
                     new BeanPropertyRowMapper<>(Muscle.class), muscleId);
         } catch (Exception e) {
-            throw new DAOException("Cant find muscle by this id:" + muscleId+ " " + e);
+            throw new DAOException("Cant find muscle by this id:" + muscleId, e);
         }
         return muscle;
     }
