@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  database:
+    image: mysql:5.7
+    hostname: mysql
+    container_name: mysql
+    volumes:
+     - demodb:/var/lib/mysq
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: demodb
+      MYSQL_USER: xxx
+      MYSQL_PASSWORD: xxx
+    ports:
+      - "3306:3306"
+
+volumes:
+  demodb:
+
