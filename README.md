@@ -23,8 +23,8 @@ ___
 5.Git flow with pull request.
 ___
 ## How to use?:
->Build project with maven: $mvn clean install
->>To run environment: $docker-compose up -d
->>>To run liquibase and fill in database: $mvn liquibase:update
+    >Build project with maven: $mvn clean install
+    >>To run environment: $docker-compose up -d
+    >>>To run liquibase and fill in database: $mvn liquibase:update
 ___
 
